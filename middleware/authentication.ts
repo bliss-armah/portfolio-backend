@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import prisma from "../config";
 import { StatusCodes } from "http-status-codes";
 import { isTokenValid } from "../utils/jwt";
-import { CustomExpressRequest, IreqPayload } from "../types";
+import { CustomExpressRequest } from "../types";
 import { JwtPayload } from "jsonwebtoken";
 
 const auth = async (req:Request, res:Response, next:NextFunction) => {
