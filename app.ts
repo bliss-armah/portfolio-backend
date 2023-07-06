@@ -3,7 +3,7 @@ import helmet from 'helmet'
 // import cors from 'cors'
 // import cookieParser from 'cookie-parser'
 import authRouter from './routes/authRoutes'
-import projectRouter from './routes/productRoutes'
+import projectRouter from './routes/projectRoutes'
 import notFoundMiddleware from './middleware/not-found';
 import errorHandlerMiddleware from './middleware/error-handler';
 import { config as dotenvConfig } from 'dotenv';

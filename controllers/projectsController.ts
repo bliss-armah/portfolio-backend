@@ -4,9 +4,9 @@ import { StatusCodes } from "http-status-codes";
 import { CustomExpressRequest } from "../types";
 
 
-const getAllJobs = async (req: Request, res: Response) => {
-
-  res.status(StatusCodes.OK).json({msg: `I got it`})
+const getAllProjects = async (req: Request, res: Response) => {
+  const projects = await prisma.project.findMany()
+  res.status(StatusCodes.OK).json({data: projects})
 }
 
 const createProject = async (req: Request, res: Response) => {
@@ -19,4 +19,4 @@ const createProject = async (req: Request, res: Response) => {
   };
 
 
-export { createProject,getAllJobs };
+export { createProject,getAllProjects };
