@@ -1,6 +1,6 @@
 import express from 'express'
 import helmet from 'helmet'
-// import cors from 'cors'
+import cors from 'cors'
 // import cookieParser from 'cookie-parser'
 import authRouter from './routes/authRoutes'
 import projectRouter from './routes/projectRoutes'
@@ -12,7 +12,7 @@ dotenvConfig();
 const app = express()
 
 app.use(helmet())
-
+app.use(cors())
 
 app.use(express.json());
 
