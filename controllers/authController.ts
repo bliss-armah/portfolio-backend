@@ -2,7 +2,6 @@ import { hashPassword } from "./../utils/hashPassword";
 import { Request, Response } from "express";
 import prisma from "../config";
 import { StatusCodes } from "http-status-codes";
-import CustomError from "../errors";
 import {createJwt} from "../utils/jwt";
 import bcrypt from "bcrypt";
 
@@ -57,7 +56,7 @@ const loginUser = async (req: Request, res: Response) => {
 
 const getUsers = async (req: Request, res: Response) => {
   const { email } = req.body;
-  const user = await prisma.user.deleteMany();
+  const user = await prisma.user.findMany();
   res.status(StatusCodes.OK).json({user });
 };
 

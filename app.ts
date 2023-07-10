@@ -1,7 +1,7 @@
 import express from 'express'
 import helmet from 'helmet'
 import cors from 'cors'
-// import cookieParser from 'cookie-parser'
+// import cookieParser from 'cookie-parser'             
 import authRouter from './routes/authRoutes'
 import projectRouter from './routes/projectRoutes'
 import notFoundMiddleware from './middleware/not-found';
@@ -35,5 +35,5 @@ const start =  () => {
   };  
   
   start();
-
+ 
   

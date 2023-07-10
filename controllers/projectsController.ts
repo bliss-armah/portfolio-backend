@@ -23,6 +23,7 @@ const getProject = async (req: Request, res: Response) => {
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `No project found with id: ${id}` });
   }
+  
   if (!project) {
     return res
       .status(StatusCodes.NOT_FOUND)

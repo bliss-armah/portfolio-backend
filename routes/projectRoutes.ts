@@ -9,8 +9,12 @@ import {
 } from "../controllers/projectsController";
 import autauthenticationMiddleware from "../middleware/authentication";
 
+
+router.route("/").get(getAllProjects);
+
 router.use(autauthenticationMiddleware);
 
-router.route("/").post(createProject).get(getAllProjects);
+router.route("/").post(createProject)
 router.route("/:id").get(getProject).patch(updateProject)
 export default router;
+
