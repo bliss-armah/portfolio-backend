@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { CustomExpressRequest } from "../types";
 
 const getAllProjects = async (req: Request, res: Response) => {
-  const projects = await prisma.project.deleteMany();
+  const projects = await prisma.project.findMany();
   res.status(StatusCodes.OK).json({ data: projects });
 };
 
@@ -18,11 +18,11 @@ const getProject = async (req: Request, res: Response) => {
     },
   });
 
-  if (project.length < 1) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ msg: `No project found with id: ${id}` });
-  }
+  // if (project.length < 1) {
+  //   return res
+  //     .status(StatusCodes.NOT_FOUND)
+  //     .json({ msg: `No project found with id: ${id}` });
+  // }
 
   if (!project) {
     return res
@@ -40,6 +40,10 @@ const createProject = async (req: Request, res: Response) => {
   const job = await prisma.project.create({
     data: req.body,
   });
+
+  if (!job) {
+    res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Project creation failed'});
+  }
   res.status(StatusCodes.CREATED).json({ data: job });
 };
 
