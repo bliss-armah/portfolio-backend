@@ -4,7 +4,13 @@ import { StatusCodes } from "http-status-codes";
 import { CustomExpressRequest } from "../types";
 
 const getAllProjects = async (req: Request, res: Response) => {
-  const projects = await prisma.project.findMany();
+  const projects = await prisma.project.findMany(
+    {
+      orderBy:{
+        createdAt: "desc",
+      }
+    }
+  );
   res.status(StatusCodes.OK).json({ data: projects });
 };
 
@@ -23,7 +29,7 @@ const getProject = async (req: Request, res: Response) => {
   //     .status(StatusCodes.NOT_FOUND)
   //     .json({ msg: `No project found with id: ${id}` });
   // }
-
+ 
   if (!project) {
     return res
       .status(StatusCodes.NOT_FOUND)
