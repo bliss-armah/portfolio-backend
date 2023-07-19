@@ -6,9 +6,10 @@ import {v2} from "cloudinary";
 
 const getAllProjects = async (req: Request, res: Response) => {
   const projects = await prisma.project.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy:{
+      createdAt: 'desc',
+    }
+    
   });
   res.status(StatusCodes.OK).json({ data: projects });
 };
@@ -23,11 +24,11 @@ const getProject = async (req: Request, res: Response) => {
     },
   });
 
-  // if (project.length < 1) {
-  //   return res
-  //     .status(StatusCodes.NOT_FOUND)
-  //     .json({ msg: `No project found with id: ${id}` });
-  // }
+  if (project.length < 1) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `No project found with id: ${id}` });
+  }
 
   if (!project) {
     return res
@@ -99,7 +100,6 @@ const updateProject = async (req: Request, res: Response) => {
   const project = await prisma.project.update({
     where: {
       id: Number(id),
-      // creatorId: Number(userId),
     },
     data: req.body,
   });
