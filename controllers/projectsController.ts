@@ -2,14 +2,13 @@ import { Request, Response } from "express";
 import prisma from "../config";
 import { StatusCodes } from "http-status-codes";
 import { CustomExpressRequest } from "../types";
-import {v2} from "cloudinary";
+import { v2 } from "cloudinary";
 
 const getAllProjects = async (req: Request, res: Response) => {
   const projects = await prisma.project.findMany({
-    orderBy:{
-      createdAt: 'desc',
-    }
-    
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   res.status(StatusCodes.OK).json({ data: projects });
 };
@@ -19,8 +18,8 @@ const getProject = async (req: Request, res: Response) => {
   const { id } = req.params;
   const project = await prisma.project.findMany({
     where: {
-      id: Number(id),
-      creatorId: Number(userId),
+      id,
+      creatorId: userId,
     },
   });
 
@@ -39,18 +38,21 @@ const getProject = async (req: Request, res: Response) => {
 };
 
 const createProject = async (req: Request, res: Response) => {
-  console.log(req.files)
+  console.log(req.files);
   if (!req.files || !req.files.image) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No image provided' });
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: "No image provided" });
   }
-  const image = Array.isArray(req.files.image) ? req.files.image[0] : req.files.image;
+  const image = Array.isArray(req.files.image)
+    ? req.files.image[0]
+    : req.files.image;
 
-    const result = await v2.uploader.upload(image.tempFilePath,{
-      use_filename: true,
-    });
+  const result = await v2.uploader.upload(image.tempFilePath, {
+    use_filename: true,
+  });
 
-    const imageUrl = result.secure_url
-
+  const imageUrl = result.secure_url;
 
   const createdBy = {
     connect: { id: Number((req as CustomExpressRequest).user.userId) },
@@ -74,7 +76,7 @@ const updateProject = async (req: Request, res: Response) => {
   const { id } = req.params;
   const findProject = await prisma.project.findUnique({
     where: {
-      id: Number(id),
+      id: id,
     },
     include: {
       createdby: {
@@ -91,7 +93,7 @@ const updateProject = async (req: Request, res: Response) => {
       .json({ msg: `This project does not exist` });
   }
 
-  if (findProject?.createdby.id !== Number(userId)) {
+  if (findProject?.createdby.id !== userId) {
     return res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `You're not eligible to update this project` });
@@ -99,7 +101,7 @@ const updateProject = async (req: Request, res: Response) => {
 
   const project = await prisma.project.update({
     where: {
-      id: Number(id),
+      id: id,
     },
     data: req.body,
   });
@@ -115,17 +117,26 @@ const updateProject = async (req: Request, res: Response) => {
 
 const uploadImage = async (req: Request, res: Response) => {
   if (!req.files || !req.files.image) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No image provided' });
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: "No image provided" });
   }
-  const image = Array.isArray(req.files.image) ? req.files.image[0] : req.files.image;
+  const image = Array.isArray(req.files.image)
+    ? req.files.image[0]
+    : req.files.image;
 
-    const result = await v2.uploader.upload(image.tempFilePath,{
-      use_filename: true,
-    });
-    console.log(result);
-    
-    res.status(StatusCodes.CREATED).json({ msg: result.secure_url });
- 
+  const result = await v2.uploader.upload(image.tempFilePath, {
+    use_filename: true,
+  });
+  console.log(result);
+
+  res.status(StatusCodes.CREATED).json({ msg: result.secure_url });
 };
 
-export { createProject, getAllProjects, getProject, updateProject,uploadImage };
+export {
+  createProject,
+  getAllProjects,
+  getProject,
+  updateProject,
+  uploadImage,
+};
